@@ -23,7 +23,7 @@ const PromoBar: React.FC = () => {
           {/* Social Links */}
           <div className="flex-shrink-0">
             <p className="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-3">
-              Watch & Follow AGFI 👇
+              Watch & Follow AGFI
             </p>
             <div className="grid grid-cols-4 gap-3">
               {Object.entries(SocialLinks).map(([label, url]) => (

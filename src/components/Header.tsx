@@ -46,12 +46,6 @@ const Header: React.FC = () => {
             }`}
           >
             <div className="inline-flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 border-2 border-white/20">
-                  <span className="text-white font-black text-2xl">🙏</span>
-                </div>
-              </div>
               <div>
                 <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter drop-shadow-2xl">
                   AGFI

@@ -4,7 +4,7 @@ import { SocialLinks } from "@/constants/social";
 
 type Props = {
   images: string[];
-  onPreview: (url: string) => void;
+  onPreview: (index: number) => void;
   currentDay: "day1" | "day2" | "day3";
 };
 
@@ -41,10 +41,18 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [imagesPerPage] = useState(12);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleImageLoad = (index: number) => {
     setLoadedImages((prev) => new Set([...prev, index]));
   };
+
+  // Reset to page 1 when day changes
+  React.useEffect(() => {
+    setIsTransitioning(true);
+    setCurrentPage(1);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, [currentDay]);
 
   // Pagination logic
   const totalPages = Math.ceil(images.length / imagesPerPage);
@@ -97,14 +105,16 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
             </div>
 
             {/* Premium grid layout with stagger animation */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-300 ${
+              isTransitioning ? "opacity-0" : "opacity-100"
+            }`}>
               {currentImages.map((src, i) => {
                 const globalIndex = startIndex + i;
                 return (
                   <div
                     key={globalIndex}
                     className="group relative h-72 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 cursor-pointer shadow-md hover:shadow-2xl transition-shadow duration-300"
-                    onClick={() => onPreview(src)}
+                    onClick={() => onPreview(globalIndex)}
                     onMouseEnter={() => setHoveredIndex(globalIndex)}
                     onMouseLeave={() => setHoveredIndex(null)}
                     style={{
@@ -278,28 +288,42 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center py-32 text-center">
-            <div className="w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center mb-6">
-              <svg
-                className="w-10 h-10 text-slate-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
+          <div className="flex flex-col items-center justify-center py-32 text-center animate-fadeIn">
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl"></div>
+              <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                <svg
+                  className="w-16 h-16 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
             </div>
-            <p className="text-slate-700 font-bold text-xl">
-              No images available
+            <h3 className="text-slate-700 font-bold text-2xl mb-2">
+              No Images Yet
+            </h3>
+            <p className="text-slate-500 text-base max-w-md mb-6">
+              {dayInfo[currentDay].subtitle} photos will be uploaded soon. Check back after the event!
             </p>
-            <p className="text-slate-500 text-sm mt-2">
-              Check back soon for updates
-            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold transition-all duration-300 hover:shadow-lg flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh Page
+              </button>
+            </div>
           </div>
         )}
       </div>

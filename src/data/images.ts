@@ -3,13 +3,13 @@
 
 export const IMAGES_BY_DAY: Record<"day1" | "day2" | "day3", string[]> = {
   day1: [
-    "https://drive.google.com/uc?export=download&id=1SQA3jci-gQ5bAnhnCtkfY6J8vdsN80bH",
+    "https://lh3.googleusercontent.com/d/10MeidtsJEnxHLWyrhKpmGaNk-8js4fVK",
   ],
   day2: [
-    "https://drive.google.com/uc?export=download&id=1Ahnf9ANFR0gSYgPDj45d1Dejk6Z4rCyf",
+    "https://lh3.googleusercontent.com/d/1SQA3jci-gQ5bAnhnCtkfY6J8vdsN80bH",
   ],
   day3: [
-    "https://drive.google.com/uc?export=download&id=1hckUnRJ_GdP5jlVbpU_WDb3stjf6JPR8",
+    "https://lh3.googleusercontent.com/d/1T1cVBQrE9-cKu3t2uyGDL09FLV-MFy6B",
   ],
 };
 

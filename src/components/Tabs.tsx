@@ -6,25 +6,38 @@ type Props = {
 };
 
 const Tabs: React.FC<Props> = ({ value, onChange }) => {
-  const btn = (v: "day1" | "day2" | "day3") =>
-    `px-3 py-2 rounded-lg font-medium transition ${
-      value === v
-        ? "bg-white border border-sky-100 shadow-sm text-sky-700"
-        : "text-gray-600 hover:text-sky-700"
-    }`;
+  const days = [
+    { id: "day1", label: "Day 1", description: "Opening" },
+    { id: "day2", label: "Day 2", description: "Growth" },
+    { id: "day3", label: "Day 3", description: "Impact" },
+  ] as const;
 
   return (
-    <nav className="flex gap-3 px-4 mt-4 max-w-5xl mx-auto">
-      <button className={btn("day1")} onClick={() => onChange("day1")}>
-        Day 1
-      </button>
-      <button className={btn("day2")} onClick={() => onChange("day2")}>
-        Day 2
-      </button>
-      <button className={btn("day3")} onClick={() => onChange("day3")}>
-        Day 3
-      </button>
-    </nav>
+    <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="flex gap-2 md:gap-4">
+          {days.map((day) => (
+            <button
+              key={day.id}
+              onClick={() => onChange(day.id as "day1" | "day2" | "day3")}
+              className={`group relative px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex flex-col items-start ${
+                value === day.id
+                  ? "bg-gradient-to-br from-blue-50 to-slate-50 text-blue-900 shadow-md border border-blue-200"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+              }`}
+            >
+              <span className="text-sm md:text-base">{day.label}</span>
+              <span className="text-xs text-slate-500 group-hover:text-slate-700 transition">
+                {day.description}
+              </span>
+              {value === day.id && (
+                <div className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

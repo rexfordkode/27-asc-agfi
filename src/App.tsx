@@ -33,9 +33,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / docHeight) * 100;
-      
+
       setScrollProgress(progress);
       setShowScrollTop(scrollTop > 400);
     };
@@ -102,7 +103,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 transition-all duration-300"
           style={{ width: `${scrollProgress}%` }}
         ></div>
@@ -116,8 +117,8 @@ const App: React.FC = () => {
       <Header />
       <PromoBar />
       <main id="main">
-        <Tabs 
-          value={day} 
+        <Tabs
+          value={day}
           onChange={handleDayChange}
           imageCounts={{
             day1: images.day1.length,
@@ -151,14 +152,18 @@ const App: React.FC = () => {
           className="fixed bottom-6 left-6 w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex items-center justify-center shadow-[0_8px_30px_rgba(59,130,246,0.4)] hover:shadow-[0_8px_40px_rgba(59,130,246,0.6)] transition-all duration-300 hover:scale-110 z-40 group"
           aria-label="Back to top"
         >
-          <svg 
-            className="w-6 h-6 transform group-hover:-translate-y-1 transition-transform" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="w-6 h-6 transform group-hover:-translate-y-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
             strokeWidth={2.5}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
           </svg>
         </button>
       )}

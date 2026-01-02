@@ -32,11 +32,13 @@ const Tabs: React.FC<Props> = ({ value, onChange, imageCounts }) => {
                 <div className="flex items-center gap-2">
                   <span className="text-sm md:text-base">{day.label}</span>
                   {count > 0 && (
-                    <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
-                      value === day.id 
-                        ? "bg-blue-500 text-white" 
-                        : "bg-slate-200 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-700"
-                    }`}>
+                    <span
+                      className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                        value === day.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-slate-200 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-700"
+                      }`}
+                    >
                       {count}
                     </span>
                   )}

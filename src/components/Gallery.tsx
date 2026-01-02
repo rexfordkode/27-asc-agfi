@@ -105,9 +105,11 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
             </div>
 
             {/* Premium grid layout with stagger animation */}
-            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-300 ${
-              isTransitioning ? "opacity-0" : "opacity-100"
-            }`}>
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-300 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
+            >
               {currentImages.map((src, i) => {
                 const globalIndex = startIndex + i;
                 return (
@@ -311,15 +313,26 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
               No Images Yet
             </h3>
             <p className="text-slate-500 text-base max-w-md mb-6">
-              {dayInfo[currentDay].subtitle} photos will be uploaded soon. Check back after the event!
+              {dayInfo[currentDay].subtitle} photos will be uploaded soon. Check
+              back after the event!
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold transition-all duration-300 hover:shadow-lg flex items-center gap-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
                 Refresh Page
               </button>

@@ -237,9 +237,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
 
             <div className="pt-4 border-t border-slate-200">
-              <p className="text-xs text-slate-500 text-center mb-4">
-                Paste Google Drive share links above (one per line)
-              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-semibold text-amber-900 mb-1">
+                      ⚠️ Important: Changes are LOCAL only!
+                    </p>
+                    <p className="text-xs text-amber-800">
+                      Other users won't see your changes until you download the file, commit it, and deploy to GitHub Pages.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               {/* Export Options */}
               <div className="space-y-2">
@@ -283,10 +295,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   Copy to Clipboard
                 </button>
 
-                <p className="text-xs text-slate-500 text-center pt-2">
-                  After downloading, replace src/data/images.ts and push to
-                  GitHub
-                </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                  <p className="text-xs font-semibold text-blue-900 mb-2">📝 Deployment Steps:</p>
+                  <ol className="text-xs text-blue-800 space-y-1 list-decimal list-inside">
+                    <li>Click "Download images.ts" above</li>
+                    <li>Replace src/data/images.ts in your project</li>
+                    <li>Run: <code className="bg-blue-100 px-1 rounded">git add . && git commit -m "Update images"</code></li>
+                    <li>Run: <code className="bg-blue-100 px-1 rounded">git push</code></li>
+                    <li>Wait 2-3 minutes for GitHub Pages to deploy</li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>

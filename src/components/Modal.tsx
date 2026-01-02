@@ -31,7 +31,9 @@ const Modal: React.FC<Props> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `AGFI 27th Annual Salvation Crusade - Image ${currentIndex + 1}`,
+          title: `AGFI 27th Annual Salvation Crusade - Image ${
+            currentIndex + 1
+          }`,
           text: `Check out this amazing moment from AGFI's 27th Annual Salvation Crusade!`,
           url: window.location.href,
         });
@@ -128,8 +130,18 @@ const Modal: React.FC<Props> = ({
           aria-label="Close preview"
           title="Close (Esc)"
         >
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth={3}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -140,8 +152,18 @@ const Modal: React.FC<Props> = ({
           aria-label="Share image"
           title="Share"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+            />
           </svg>
         </button>
 
@@ -158,9 +180,11 @@ const Modal: React.FC<Props> = ({
               {totalImages > 1 && (
                 <div className="flex-1 max-w-xs">
                   <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300"
-                      style={{ width: `${((currentIndex + 1) / totalImages) * 100}%` }}
+                      style={{
+                        width: `${((currentIndex + 1) / totalImages) * 100}%`,
+                      }}
                     ></div>
                   </div>
                 </div>
@@ -168,15 +192,21 @@ const Modal: React.FC<Props> = ({
             </div>
             <div className="flex items-center gap-4 mt-2">
               <p className="text-white/70 text-sm flex items-center gap-2">
-                <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">ESC</kbd>
+                <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">
+                  ESC
+                </kbd>
                 <span>Close</span>
               </p>
               {(onPrevious || onNext) && (
                 <>
                   <span className="text-white/40">•</span>
                   <p className="text-white/70 text-sm flex items-center gap-2">
-                    <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">←</kbd>
-                    <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">→</kbd>
+                    <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">
+                      ←
+                    </kbd>
+                    <kbd className="px-2 py-1 text-xs bg-white/10 rounded border border-white/20">
+                      →
+                    </kbd>
                     <span>Navigate</span>
                   </p>
                 </>
@@ -189,8 +219,18 @@ const Modal: React.FC<Props> = ({
             rel="noopener noreferrer"
             className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-purple-700 text-white text-sm font-bold transition-all duration-300 hover:shadow-[0_8px_30px_rgb(59,130,246,0.5)] hover:scale-105 border border-blue-400/30 flex items-center gap-2"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
             </svg>
             Open Full Size
           </a>

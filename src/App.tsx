@@ -1,14 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import PromoBar from "@/components/PromoBar";
 import Tabs from "@/components/Tabs";
 import Gallery from "@/components/Gallery";
 import Modal from "@/components/Modal";
+import AdminPanel from "@/components/AdminPanel";
 import { IMAGES_BY_DAY } from "@/data/images";
 
 const App: React.FC = () => {
   const [day, setDay] = useState<"day1" | "day2" | "day3">("day1");
   const [preview, setPreview] = useState<string | null>(null);
+  const [images, setImages] = useState(IMAGES_BY_DAY);
+
+  // Load images from localStorage on mount
+  useEffect(() => {
+    const savedImages = localStorage.getItem("agfi_images");
+    if (savedImages) {
+      setImages(JSON.parse(savedImages));
+    }
+  }, []);
+
+  // Save images to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("agfi_images", JSON.stringify(images));
+  }, [images]);
+
+  const handleImagesAdd = (
+    selectedDay: "day1" | "day2" | "day3",
+    urls: string[]
+  ) => {
+    setImages((prev) => ({
+      ...prev,
+      [selectedDay]: [...prev[selectedDay], ...urls],
+    }));
+  };
+
+  const handleImageRemove = (
+    selectedDay: "day1" | "day2" | "day3",
+    index: number
+  ) => {
+    setImages((prev) => ({
+      ...prev,
+      [selectedDay]: prev[selectedDay].filter((_, i) => i !== index),
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -22,7 +57,7 @@ const App: React.FC = () => {
       <main id="main">
         <Tabs value={day} onChange={(d) => setDay(d)} />
         <Gallery
-          images={IMAGES_BY_DAY[day]}
+          images={images[day]}
           onPreview={(url) => setPreview(url)}
           currentDay={day}
         />
@@ -37,6 +72,13 @@ const App: React.FC = () => {
           </p>
         </div>
       </footer>
+
+      {/* Admin Panel */}
+      <AdminPanel
+        onImagesAdd={handleImagesAdd}
+        onImageRemove={handleImageRemove}
+        currentImages={images}
+      />
 
       {preview && <Modal src={preview} onClose={() => setPreview(null)} />}
     </div>

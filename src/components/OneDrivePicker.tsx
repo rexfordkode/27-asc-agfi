@@ -1,78 +1,104 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
 interface OneDrivePickerProps {
   onSuccess: (files: any[]) => void;
   onCancel?: () => void;
 }
 
-declare global {
-  interface Window {
-    OneDrive: any;
-  }
-}
-
 const OneDrivePicker: React.FC<OneDrivePickerProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  useEffect(() => {
-    // Load OneDrive picker script
-    const script = document.createElement("script");
-    script.src = "https://js.live.net/v7.2/OneDrive.js";
-    script.async = true;
-    document.body.appendChild(script);
+  const [links, setLinks] = useState("");
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  const extractFileId = (url: string): string | null => {
+    // Extract file ID from Google Drive URL
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  };
 
-  const openPicker = () => {
-    if (window.OneDrive) {
-      const odOptions = {
-        clientId: "YOUR_ONEDRIVE_CLIENT_ID", // Replace with your OneDrive App Client ID
-        action: "download",
-        multiSelect: true,
-        openInNewWindow: true,
-        advanced: {
-          filter: "folder,.jpg,.jpeg,.png,.gif,.webp",
-        },
-        success: (files: any) => {
-          console.log("Files selected:", files);
-          const fileUrls = files.value.map((file: any) => ({
-            name: file.name,
-            url: file["@microsoft.graph.downloadUrl"],
-            thumbnailUrl:
-              file.thumbnails?.[0]?.large?.url ||
-              file["@microsoft.graph.downloadUrl"],
-          }));
-          onSuccess(fileUrls);
-        },
-        cancel: () => {
-          console.log("Picker cancelled");
-          onCancel?.();
-        },
-        error: (error: any) => {
-          console.error("Picker error:", error);
-        },
-      };
-
-      window.OneDrive.open(odOptions);
-    } else {
-      alert("OneDrive picker is not loaded yet. Please try again.");
+  const handleAddLinks = () => {
+    if (!links.trim()) {
+      alert("Please paste Google Drive links");
+      return;
     }
+
+    // Split by newlines and filter empty lines
+    const urlList = links
+      .split("\n")
+      .map((link) => link.trim())
+      .filter((link) => link.length > 0);
+
+    if (urlList.length === 0) {
+      alert("No valid links found");
+      return;
+    }
+
+    // Convert Google Drive links to direct image URLs
+    const fileData = urlList
+      .map((url, index) => {
+        const fileId = extractFileId(url);
+        if (!fileId) {
+          console.warn("Invalid Google Drive URL:", url);
+          return null;
+        }
+        return {
+          name: `Image ${index + 1}`,
+          url: `https://lh3.googleusercontent.com/d/${fileId}`,
+          thumbnailUrl: `https://lh3.googleusercontent.com/d/${fileId}`,
+        };
+      })
+      .filter((item) => item !== null);
+
+    if (fileData.length === 0) {
+      alert(
+        "No valid Google Drive links found. Please use the format: https://drive.google.com/file/d/FILE_ID/view"
+      );
+      return;
+    }
+
+    onSuccess(fileData);
+    setLinks(""); // Clear textarea
   };
 
   return (
-    <button
-      onClick={openPicker}
-      className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
-    >
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M13.8 12l4.8-2.4L13.8 7.2 9 9.6l4.8 2.4zM9 14.4l4.8 2.4 4.8-2.4L13.8 12 9 14.4zM4.2 9.6L9 7.2 4.2 4.8v4.8zM4.2 14.4v4.8L9 16.8l-4.8-2.4z" />
-      </svg>
-      Add Images from OneDrive
-    </button>
+    <div className="space-y-3">
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          Paste Google Drive Links (one per line)
+        </label>
+        <textarea
+          value={links}
+          onChange={(e) => setLinks(e.target.value)}
+          placeholder="https://drive.google.com/file/d/FILE_ID/view
+https://drive.google.com/file/d/ANOTHER_FILE_ID/view"
+          rows={5}
+          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-mono resize-none"
+        />
+        <p className="text-xs text-slate-500 mt-1">
+          Make sure files are set to "Anyone with the link" can view
+        </p>
+      </div>
+      <button
+        onClick={handleAddLinks}
+        className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+          />
+        </svg>
+        Add Images from Google Drive
+      </button>
+    </div>
   );
 };
 

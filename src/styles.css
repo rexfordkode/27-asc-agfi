@@ -1,0 +1,15 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Small custom utilities to keep tiny stylistic tweaks */
+.brand-grad {
+  background: linear-gradient(90deg, #1e3a8a, #2366b2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.icon-square { @apply w-10 h-10 rounded-lg flex items-center justify-center bg-white shadow text-gray-600 }
+

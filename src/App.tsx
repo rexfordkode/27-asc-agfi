@@ -168,12 +168,12 @@ const App: React.FC = () => {
         </button>
       )}
 
-      {/* Admin Panel */}
-      <AdminPanel
+      {/* Admin Panel - Disabled */}
+      {/* <AdminPanel
         onImagesAdd={handleImagesAdd}
         onImageRemove={handleImageRemove}
         currentImages={images}
-      />
+      /> */}
 
       {previewIndex !== null && (
         <Modal

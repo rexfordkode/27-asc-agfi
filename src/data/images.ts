@@ -93,12 +93,8 @@ export const IMAGES_BY_DAY: Record<"day1" | "day2" | "day3", string[]> = {
     "https://lh3.googleusercontent.com/d/1zZ-Aw3lNKoEyvVd35xzAFrPcy49FoqK2",
     "https://lh3.googleusercontent.com/d/1H-qKK-CWh8JhWyjFniG9ZUScz70_N-n5",
   ],
-  day2: [
-    "https://lh3.googleusercontent.com/d/1SQA3jci-gQ5bAnhnCtkfY6J8vdsN80bH",
-  ],
-  day3: [
-    "https://lh3.googleusercontent.com/d/1T1cVBQrE9-cKu3t2uyGDL09FLV-MFy6B",
-  ],
+  day2: [],
+  day3: [],
 };
 
 // Key decisions:

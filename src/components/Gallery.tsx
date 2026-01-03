@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaTiktok, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
 import { SocialLinks } from "@/constants/social";
+import { optimizeGoogleDriveImage } from "@/utils/imageOptimization";
 
 type Props = {
   images: string[];
@@ -127,7 +128,7 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
                     <div className="relative w-full h-full">
                       <img
                         loading="lazy"
-                        src={src}
+                        src={optimizeGoogleDriveImage(src, { width: 600, quality: 80 })}
                         alt={`Program image ${globalIndex + 1}`}
                         decoding="async"
                         onLoad={() => handleImageLoad(globalIndex)}

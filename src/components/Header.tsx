@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 // Add your banner image URL here
+// Optimized Google Drive URL with caching and lazy loading
 const BANNER_IMAGE =
-  "https://lh3.googleusercontent.com/d/1EwRGUNU7W2i4yLv4OvEu7qG_yhLdX5ij";
+  "https://lh3.googleusercontent.com/d/1EwRGUNU7W2i4yLv4OvEu7qG_yhLdX5ij?export=download&w=1200&q=80";
 
 const Header: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -15,16 +16,22 @@ const Header: React.FC = () => {
   return (
     <header className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Banner Image with Overlay */}
-      <div className="relative w-full h-[400px] md:h-[500px]">
+      <div className="relative w-full h-[450px] md:h-[550px]">
         {/* Banner Image */}
         <div className="absolute inset-0">
           <img
             src={BANNER_IMAGE}
             alt="AGFI Crusade Banner"
-            className={`w-full h-full object-cover transition-all duration-700 ${
+            className={`w-full h-full object-cover object-center transition-all duration-700 ${
               imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105"
             }`}
+            loading="eager"
+            decoding="async"
             onLoad={() => setImageLoaded(true)}
+            style={{
+              filter: imageLoaded ? "brightness(0.85) contrast(1.1)" : "none",
+              backgroundSize: "cover",
+            }}
           />
 
           {/* Loading skeleton for banner */}
@@ -33,9 +40,10 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        {/* Gradient Overlays for Better Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
+        {/* Enhanced Gradient Overlays for Better Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50"></div>
 
         {/* Content Overlay */}
         <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col justify-end pb-12 md:pb-16">

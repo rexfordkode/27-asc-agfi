@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { optimizeGoogleDriveImage } from "@/utils/imageOptimization";
 
 type Props = {
   src: string;
@@ -66,7 +67,7 @@ const Modal: React.FC<Props> = ({
         {/* Image */}
         <div className="relative w-full h-full bg-gradient-to-br from-slate-950 to-black flex items-center justify-center p-8">
           <img
-            src={src}
+            src={optimizeGoogleDriveImage(src, { width: 1200, quality: 90 })}
             alt="Preview"
             className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
           />

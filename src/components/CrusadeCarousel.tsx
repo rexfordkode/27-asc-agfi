@@ -10,10 +10,10 @@ type Props = {
 // Helper function to get the currently happening or next upcoming crusade
 const getCurrentOrNextCrusade = (crusades: CrusadeData[]): string | null => {
   const now = new Date();
-  
+
   // Parse date strings like "January 2, 2026" or "January 5, 2026 @ 7:00 PM"
   const parseDate = (dateStr: string): Date => {
-    const cleanDate = dateStr.split('@')[0].trim();
+    const cleanDate = dateStr.split("@")[0].trim();
     return new Date(cleanDate);
   };
 
@@ -21,10 +21,10 @@ const getCurrentOrNextCrusade = (crusades: CrusadeData[]): string | null => {
   for (const crusade of crusades) {
     const startDate = parseDate(crusade.startDate);
     const endDate = parseDate(crusade.endDate);
-    
+
     // Set end date to end of day
     endDate.setHours(23, 59, 59, 999);
-    
+
     if (now >= startDate && now <= endDate) {
       return crusade.id;
     }
@@ -55,11 +55,11 @@ const CrusadeCarousel: React.FC<Props> = ({
 
     // Get the current or next crusade based on date
     const currentCrusadeId = getCurrentOrNextCrusade(allCrusades);
-    
+
     // Set initial index based on current/next crusade or selected crusade
     const indexToUse = currentCrusadeId || selectedCrusadeId;
     const selectedIndex = allCrusades.findIndex((c) => c.id === indexToUse);
-    
+
     if (selectedIndex >= 0) {
       setCurrentIndex(selectedIndex);
       // Only trigger onSelectCrusade if different from current selected
@@ -74,15 +74,11 @@ const CrusadeCarousel: React.FC<Props> = ({
   }
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? crusades.length - 1 : prev - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? crusades.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === crusades.length - 1 ? 0 : prev + 1
-    );
+    setCurrentIndex((prev) => (prev === crusades.length - 1 ? 0 : prev + 1));
   };
 
   const handleSelectCrusade = (crusadeId: string) => {
@@ -111,7 +107,8 @@ const CrusadeCarousel: React.FC<Props> = ({
             Explore Our Events
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto font-light">
-            Discover the power and glory from our crusade programs across multiple locations
+            Discover the power and glory from our crusade programs across
+            multiple locations
           </p>
         </div>
 
@@ -211,9 +208,11 @@ const CrusadeCarousel: React.FC<Props> = ({
                   {crusades.map((crusade) => (
                     <button
                       key={crusade.id}
-                      onClick={() => setCurrentIndex(
-                        crusades.findIndex((c) => c.id === crusade.id)
-                      )}
+                      onClick={() =>
+                        setCurrentIndex(
+                          crusades.findIndex((c) => c.id === crusade.id)
+                        )
+                      }
                       className={`h-2 rounded-full transition-all duration-300 ${
                         crusades[currentIndex]?.id === crusade.id
                           ? "bg-blue-500 w-8"

@@ -9,9 +9,8 @@ import AdminPanel from "@/components/AdminPanel";
 import { getAllCrusades, getCrusadeById } from "@/data/images";
 
 const App: React.FC = () => {
-  const [selectedCrusadeId, setSelectedCrusadeId] = useState<string>(
-    "crusade-2026-main"
-  );
+  const [selectedCrusadeId, setSelectedCrusadeId] =
+    useState<string>("crusade-2026-main");
   const [day, setDay] = useState<"day1" | "day2" | "day3">("day1");
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -28,7 +27,10 @@ const App: React.FC = () => {
       } catch (error) {
         // Initialize with current crusades
         const crusades = getAllCrusades();
-        const initialData: Record<string, Record<"day1" | "day2" | "day3", string[]>> = {};
+        const initialData: Record<
+          string,
+          Record<"day1" | "day2" | "day3", string[]>
+        > = {};
         crusades.forEach((crusade) => {
           initialData[crusade.id] = { ...crusade.images };
         });
@@ -37,7 +39,10 @@ const App: React.FC = () => {
     }
     // Initialize with current crusades
     const crusades = getAllCrusades();
-    const initialData: Record<string, Record<"day1" | "day2" | "day3", string[]>> = {};
+    const initialData: Record<
+      string,
+      Record<"day1" | "day2" | "day3", string[]>
+    > = {};
     crusades.forEach((crusade) => {
       initialData[crusade.id] = { ...crusade.images };
     });
@@ -59,7 +64,6 @@ const App: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
 
   // Save images to localStorage whenever they change
   useEffect(() => {
@@ -89,12 +93,17 @@ const App: React.FC = () => {
       ...prev,
       [crusadeId]: {
         ...prev[crusadeId],
-        [selectedDay]: prev[crusadeId]?.[selectedDay]?.filter((_, i) => i !== index) || [],
+        [selectedDay]:
+          prev[crusadeId]?.[selectedDay]?.filter((_, i) => i !== index) || [],
       },
     }));
   };
 
-  const currentCrusadeImages = crusadeImages[selectedCrusadeId] || { day1: [], day2: [], day3: [] };
+  const currentCrusadeImages = crusadeImages[selectedCrusadeId] || {
+    day1: [],
+    day2: [],
+    day3: [],
+  };
   const currentImages = currentCrusadeImages[day];
 
   const handleNext = () => {

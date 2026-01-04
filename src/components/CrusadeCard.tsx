@@ -28,7 +28,10 @@ const CrusadeCard: React.FC<Props> = ({ crusade, isSelected, onClick }) => {
       {/* Background Image */}
       {thumbnailImage && (
         <img
-          src={optimizeGoogleDriveImage(thumbnailImage, { width: 400, quality: 80 })}
+          src={optimizeGoogleDriveImage(thumbnailImage, {
+            width: 400,
+            quality: 80,
+          })}
           alt={crusade.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -40,15 +43,9 @@ const CrusadeCard: React.FC<Props> = ({ crusade, isSelected, onClick }) => {
       {/* Content */}
       <div className="relative h-full flex flex-col justify-end p-6 text-white">
         <div className="space-y-2">
-          <h3 className="text-2xl font-bold tracking-tight">
-            {crusade.name}
-          </h3>
+          <h3 className="text-2xl font-bold tracking-tight">{crusade.name}</h3>
           <div className="flex items-center gap-2 text-sm text-blue-200">
-            <svg
-              className="w-4 h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
                 d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
@@ -58,11 +55,7 @@ const CrusadeCard: React.FC<Props> = ({ crusade, isSelected, onClick }) => {
             {crusade.location}
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-300">
-            <svg
-              className="w-4 h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path d="M6 2a1 1 0 000 2h8a1 1 0 100-2H6zM4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" />
             </svg>
             {crusade.startDate} - {crusade.endDate}

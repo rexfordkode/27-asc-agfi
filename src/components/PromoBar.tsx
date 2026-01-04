@@ -1,5 +1,11 @@
 import React from "react";
-import { FaTiktok, FaFacebook, FaYoutube, FaInstagram, FaHeart } from "react-icons/fa";
+import {
+  FaTiktok,
+  FaFacebook,
+  FaYoutube,
+  FaInstagram,
+  FaHeart,
+} from "react-icons/fa";
 import { GiPrayer } from "react-icons/gi";
 import { SocialLinks } from "@/constants/social";
 
@@ -16,7 +22,10 @@ const PromoBar: React.FC = () => {
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+        <div
+          className="absolute -bottom-20 -left-20 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       {/* Content */}
@@ -25,13 +34,17 @@ const PromoBar: React.FC = () => {
           {/* Main Message */}
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
-              <GiPrayer className="w-5 h-5 text-yellow-300 animate-bounce" style={{ animationDelay: "0s" }} />
+              <GiPrayer
+                className="w-5 h-5 text-yellow-300 animate-bounce"
+                style={{ animationDelay: "0s" }}
+              />
               <h2 className="text-xl md:text-2xl font-bold text-white">
                 Join Us in God's Presence
               </h2>
             </div>
             <p className="text-blue-100 text-sm md:text-base font-medium">
-              Experience the transformative power of faith through salvation crusades.
+              Experience the transformative power of faith through salvation
+              crusades.
             </p>
           </div>
 

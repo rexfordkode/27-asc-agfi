@@ -3,8 +3,16 @@ import OneDrivePicker from "./OneDrivePicker";
 import { getAllCrusades } from "@/data/images";
 
 interface AdminPanelProps {
-  onImagesAdd: (crusadeId: string, day: "day1" | "day2" | "day3", urls: string[]) => void;
-  onImageRemove: (crusadeId: string, day: "day1" | "day2" | "day3", index: number) => void;
+  onImagesAdd: (
+    crusadeId: string,
+    day: "day1" | "day2" | "day3",
+    urls: string[]
+  ) => void;
+  onImageRemove: (
+    crusadeId: string,
+    day: "day1" | "day2" | "day3",
+    index: number
+  ) => void;
   currentCrusadeId: string;
   currentImages: Record<string, Record<"day1" | "day2" | "day3", string[]>>;
 }
@@ -98,7 +106,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   currentImages,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCrusadeId, setSelectedCrusadeId] = useState<string>(currentCrusadeId);
+  const [selectedCrusadeId, setSelectedCrusadeId] =
+    useState<string>(currentCrusadeId);
   const [selectedDay, setSelectedDay] = useState<"day1" | "day2" | "day3">(
     "day1"
   );
@@ -212,7 +221,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         ) : (
           <div className="space-y-6">
             <div>
-              <label htmlFor="crusade-select" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="crusade-select"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Select Crusade/Program
               </label>
               <select
@@ -230,7 +242,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
 
             <div>
-              <label htmlFor="day-select" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="day-select"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Select Day
               </label>
               <select
@@ -258,55 +273,63 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             <div className="pt-4 border-t border-slate-200">
               <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center justify-between">
                 <span>
-                  Current Images ({(currentImages[selectedCrusadeId]?.[selectedDay] || []).length})
+                  Current Images (
+                  {
+                    (currentImages[selectedCrusadeId]?.[selectedDay] || [])
+                      .length
+                  }
+                  )
                 </span>
               </h3>
 
-              {(currentImages[selectedCrusadeId]?.[selectedDay] || []).length === 0 ? (
+              {(currentImages[selectedCrusadeId]?.[selectedDay] || [])
+                .length === 0 ? (
                 <p className="text-sm text-slate-500 text-center py-4">
                   No images added yet for this day
                 </p>
               ) : (
                 <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {(currentImages[selectedCrusadeId]?.[selectedDay] || []).map((url, index) => (
-                    <div
-                      key={`${selectedCrusadeId}-${selectedDay}-${index}`}
-                      className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
-                    >
-                      <img
-                        src={url}
-                        alt=""
-                        className="w-12 h-12 object-cover rounded border border-slate-200"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-700 truncate">
-                          Image {index + 1}
-                        </p>
-                        <p className="text-xs text-slate-500 truncate">
-                          {url.substring(0, 50)}...
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveImage(index)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                        title="Remove image"
+                  {(currentImages[selectedCrusadeId]?.[selectedDay] || []).map(
+                    (url, index) => (
+                      <div
+                        key={`${selectedCrusadeId}-${selectedDay}-${index}`}
+                        className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                        <img
+                          src={url}
+                          alt=""
+                          className="w-12 h-12 object-cover rounded border border-slate-200"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-slate-700 truncate">
+                            Image {index + 1}
+                          </p>
+                          <p className="text-xs text-slate-500 truncate">
+                            {url.substring(0, 50)}...
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveImage(index)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                          title="Remove image"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    )
+                  )}
                 </div>
               )}
             </div>

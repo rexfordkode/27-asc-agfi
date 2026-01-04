@@ -7,7 +7,12 @@ type Props = {
   dayCount?: number; // Number of days to show (2 or 3)
 };
 
-const Tabs: React.FC<Props> = ({ value, onChange, imageCounts, dayCount = 3 }) => {
+const Tabs: React.FC<Props> = ({
+  value,
+  onChange,
+  imageCounts,
+  dayCount = 3,
+}) => {
   const allDays = [
     { id: "day1", label: "Day 1", description: "Opening" },
     { id: "day2", label: "Day 2", description: "Growth" },

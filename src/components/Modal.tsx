@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { optimizeGoogleDriveImage } from "@/utils/imageOptimization";
+import { normalizeImageUrl } from "@/utils/imageOptimization";
 
 type Props = {
   src: string;
@@ -18,6 +18,15 @@ const Modal: React.FC<Props> = ({
   currentIndex = 0,
   totalImages = 1,
 }) => {
+  const [imageError, setImageError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  // Reset error state when src changes
+  React.useEffect(() => {
+    setImageError(false);
+    setIsLoading(true);
+  }, [src]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -66,11 +75,43 @@ const Modal: React.FC<Props> = ({
       >
         {/* Image */}
         <div className="relative w-full h-full bg-gradient-to-br from-slate-950 to-black flex items-center justify-center p-8">
-          <img
-            src={optimizeGoogleDriveImage(src, { width: 1200, quality: 90 })}
-            alt="Preview"
-            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-          />
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+            </div>
+          )}
+          {imageError ? (
+            <div className="text-center text-white p-8">
+              <svg
+                className="w-20 h-20 mx-auto mb-4 text-red-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <p className="text-lg font-semibold mb-2">Failed to load image</p>
+              <p className="text-sm text-gray-400">
+                The image could not be displayed
+              </p>
+            </div>
+          ) : (
+            <img
+              src={normalizeImageUrl(src, { width: 1200, quality: 90 })}
+              alt="Preview"
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              onLoad={() => setIsLoading(false)}
+              onError={() => {
+                setIsLoading(false);
+                setImageError(true);
+              }}
+            />
+          )}
 
           {/* Enhanced Navigation buttons with hover animations */}
           {onPrevious && (

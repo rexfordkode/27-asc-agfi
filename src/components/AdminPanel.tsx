@@ -5,21 +5,27 @@ import { getAllCrusades } from "@/data/images";
 interface AdminPanelProps {
   onImagesAdd: (
     crusadeId: string,
-    day: "day1" | "day2" | "day3",
+    day: "day1" | "day2" | "day3" | "day4",
     urls: string[]
   ) => void;
   onImageRemove: (
     crusadeId: string,
-    day: "day1" | "day2" | "day3",
+    day: "day1" | "day2" | "day3" | "day4",
     index: number
   ) => void;
   currentCrusadeId: string;
-  currentImages: Record<string, Record<"day1" | "day2" | "day3", string[]>>;
+  currentImages: Record<
+    string,
+    Record<"day1" | "day2" | "day3" | "day4", string[]>
+  >;
 }
 
 // Generate the images.ts file content
 const generateImagesFile = (
-  crusadeImages: Record<string, Record<"day1" | "day2" | "day3", string[]>>
+  crusadeImages: Record<
+    string,
+    Record<"day1" | "day2" | "day3" | "day4", string[]>
+  >
 ): string => {
   const formatArray = (urls: string[]) => {
     if (urls.length === 0) return "[]";
@@ -38,10 +44,12 @@ const generateImagesFile = (
     startDate: "${crusade.startDate}",
     endDate: "${crusade.endDate}",
     description: "${crusade.description}",
+    dayCount: ${crusade.dayCount},
     images: {
       day1: ${formatArray(images.day1)},
       day2: ${formatArray(images.day2)},
       day3: ${formatArray(images.day3)},
+      day4: ${formatArray(images.day4)},
     },
   },\n`;
   }
@@ -56,10 +64,12 @@ export interface CrusadeData {
   startDate: string;
   endDate: string;
   description: string;
+  dayCount: number;
   images: {
     day1: string[];
     day2: string[];
     day3: string[];
+    day4: string[];
   };
 }
 
@@ -108,16 +118,40 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCrusadeId, setSelectedCrusadeId] =
     useState<string>(currentCrusadeId);
-  const [selectedDay, setSelectedDay] = useState<"day1" | "day2" | "day3">(
-    "day1"
-  );
+  const [selectedDay, setSelectedDay] = useState<
+    "day1" | "day2" | "day3" | "day4"
+  >("day1");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [manualUrls, setManualUrls] = useState("");
   const crusades = getAllCrusades();
+  const selectedCrusade = crusades.find(
+    (crusade) => crusade.id === selectedCrusadeId
+  );
+  const dayOptions = [
+    { id: "day1", label: "Day 1 - Opening Night" },
+    { id: "day2", label: "Day 2 - Healing & Deliverance" },
+    { id: "day3", label: "Day 3 - Power & Closing Glory" },
+    { id: "day4", label: "Health Screening - Community Care" },
+  ] as const;
+  const availableDayOptions = dayOptions.slice(
+    0,
+    selectedCrusade?.dayCount ?? 3
+  );
 
   useEffect(() => {
     setSelectedCrusadeId(currentCrusadeId);
   }, [currentCrusadeId]);
+
+  useEffect(() => {
+    if (
+      selectedDay === "day4" &&
+      selectedCrusade?.dayCount &&
+      selectedCrusade.dayCount < 4
+    ) {
+      setSelectedDay("day1");
+    }
+  }, [selectedCrusade?.dayCount, selectedDay]);
 
   const ADMIN_PASSWORD = "agfi2026"; // Change this to your secure password
 
@@ -141,6 +175,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
+  const handleManualAdd = () => {
+    // Extract all URLs from the textarea, regardless of separators
+    const urls = Array.from(
+      new Set(
+        manualUrls.match(/https?:\/\/\S+/g)?.map((url) => url.trim()) || []
+      )
+    );
+
+    if (urls.length === 0) {
+      alert("Please paste at least one OneDrive link.");
+      return;
+    }
+
+    onImagesAdd(selectedCrusadeId, selectedDay, urls);
+    setManualUrls("");
+    alert(
+      `${urls.length} link${
+        urls.length === 1 ? "" : "s"
+      } added to ${selectedDay}.`
+    );
+  };
+
   const handleDownloadConfig = () => {
     const fileContent = generateImagesFile(currentImages);
     downloadFile(fileContent, "images.ts");
@@ -162,7 +218,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         className="fixed bottom-6 left-6 w-12 h-12 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-40"
         title="Admin Panel"
       >
-        <svg
+        {/* COMMENTED OUT: + icon */}
+        {/* <svg
           className="w-6 h-6"
           fill="none"
           stroke="currentColor"
@@ -174,7 +231,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             strokeWidth={2}
             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
-        </svg>
+        </svg> */}
       </button>
     );
   }
@@ -252,14 +309,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 id="day-select"
                 value={selectedDay}
                 onChange={(e) =>
-                  setSelectedDay(e.target.value as "day1" | "day2" | "day3")
+                  setSelectedDay(
+                    e.target.value as "day1" | "day2" | "day3" | "day4"
+                  )
                 }
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="day1">Day 1 - Opening Night</option>
-                <option value="day2">Day 2 - Healing & Deliverance</option>
-                <option value="day3">Day 3 - Power & Closing Glory</option>
+                {availableDayOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-slate-700">
+                Paste OneDrive links (one per line)
+              </label>
+              <textarea
+                value={manualUrls}
+                onChange={(e) => setManualUrls(e.target.value)}
+                className="w-full h-24 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                placeholder="https://1drv.ms/..."
+              />
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleManualAdd}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+                >
+                  Add links to this day
+                </button>
+              </div>
             </div>
 
             {/* COMMENTED OUT: Add images functionality disabled for production

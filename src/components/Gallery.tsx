@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FaTiktok, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
 import { SocialLinks } from "@/constants/social";
-import { optimizeGoogleDriveImage } from "@/utils/imageOptimization";
+import { normalizeImageUrl } from "@/utils/imageOptimization";
 
 type Props = {
   images: string[];
   onPreview: (index: number) => void;
-  currentDay: "day1" | "day2" | "day3";
+  currentDay: "day1" | "day2" | "day3" | "day4";
 };
 
 const socialIcons: Record<string, React.ReactNode> = {
@@ -17,7 +17,7 @@ const socialIcons: Record<string, React.ReactNode> = {
 };
 
 const dayInfo: Record<
-  "day1" | "day2" | "day3",
+  "day1" | "day2" | "day3" | "day4",
   { title: string; subtitle: string; date: string }
 > = {
   day1: {
@@ -34,6 +34,11 @@ const dayInfo: Record<
     title: "Day 3",
     subtitle: "Power & Closing Glory",
     date: "January 4th, 2026",
+  },
+  day4: {
+    title: "Health Screening",
+    subtitle: "Community Health & Wellness",
+    date: "January 5th, 2026",
   },
 };
 
@@ -137,7 +142,7 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
                     <div className="relative w-full h-full">
                       <img
                         loading="lazy"
-                        src={optimizeGoogleDriveImage(src, {
+                        src={normalizeImageUrl(src, {
                           width: 600,
                           quality: 80,
                         })}

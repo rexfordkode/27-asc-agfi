@@ -8,11 +8,12 @@ export interface CrusadeData {
   startDate: string;
   endDate: string;
   description: string;
-  dayCount: number; // Number of days in this crusade (2 or 3)
+  dayCount: number;
   images: {
     day1: string[];
     day2: string[];
     day3: string[];
+    day4: string[];
   };
 }
 
@@ -22,9 +23,9 @@ export const CRUSADES: Record<string, CrusadeData> = {
     name: "27th Annual Salvation Crusade",
     location: "Main Location",
     startDate: "January 2, 2026",
-    endDate: "January 4, 2026",
+    endDate: "January 5, 2026",
     description: "Power in the Name of Jesus",
-    dayCount: 3,
+    dayCount: 4,
     images: {
       day1: [
         "https://lh3.googleusercontent.com/d/10MeidtsJEnxHLWyrhKpmGaNk-8js4fVK",
@@ -245,6 +246,50 @@ export const CRUSADES: Record<string, CrusadeData> = {
         "https://lh3.googleusercontent.com/d/1xGQTTD1hVsM-QK-DD1tZGURYjXPA4qfh?export=download",
       ],
       day3: [],
+      day4: [
+        "https://drive.google.com/file/d/1GuhcC_PXczsYN2qqSNV6tMCdEMr-izmI/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1UgDNPK-UHqceS9AVQ1HdiyI8HaPpnzpa/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1AFgmG895d2pcgoUr35QLPLX0bWx6_9Y-/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1oFmVnCNEfCzllxmExnt7ldpSEQkgMI0g/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1e3fGvvhhXPT1rMo07oPfqVdRu0nOu_7U/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1KiZ3kW1qUSZ4DG7A8u3ZpOOl_wKqJXz8/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1WMjt-k9Y_M5XuHpI0q2IWF3SF_hZpyic/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1pkClKcf3QRw6kd3ZdLIADsc8Y4bHp_bO/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1Ei8ruE8JS2E5YEXxKrNkenTRTOXAUDcH/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1OZSUCcaLhrlPHM69UIQwPwFENiqNF3F2/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1zNw23JKjU6MfArs180JiuCK2n_H91ghF/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1x_w2mR47FPsD3rjuDHqi8lEwcZuPEVWi/view?usp=drive_link,",
+        "https://drive.google.com/file/d/121l1g_6Pq__eXXsh-1elkhQ5MdjLk3X0/view?usp=drive_link,",
+        "https://drive.google.com/file/d/10GHi95fCSzkIU0iJHkAc8umnpJlBI1s1/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1le24w5lowMUoZpuwX1EhHigTh7omZWTG/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1zzheI_gWEXP6GVgOCYIYImi_JjHQB33e/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1WdQSh8MNxLO6StA7O1RwrTMQdoFHgVsK/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1r0Suj4Qqwr1uKIkkVjPTKulVeFKQazwq/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1b499oJmBW8YrGu5AIA9QgGR71uJiqKCR/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1ZC2QBS1SyXAHWOwcWCnWPL2hiQmDBUhK/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1g9G3EoYIzUTEaEeOCX-akCGXukOqWqyJ/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1mURoekJVKrUJvxHE1Hq6Ul1bwUwasyBH/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1hyJXSyP389DEiiFqtWGfeRqCJJsC6AY3/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1OV0FxoIq6p1GnJmCLJgiSL5VcKrPKxPP/view?usp=drive_link,",
+        "https://drive.google.com/file/d/11StT6DGu6dsyAaI9JCeepU_t-fmFhaHq/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1rzC-hKafxwdTCMcnsX-2py243TczEZOf/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1rR9FUBD-y4r5XYMF9-DBT5ZxJWlqnUL0/view?usp=drive_link,",
+        "https://drive.google.com/file/d/19fpYMiN2QZvcJMZq5N4NyNMxMgegiuSD/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1zy7zH4KG23p7q3nZTJlKks7kYxk5h5AD/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1hd7Dht3zzBsCLxWrlpNGbowr219CpJND/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1Eobc8Yhyrigsm94DjHC8tO6QnSWsMzLh/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1KF0FJV3KnQVBueq1cU2B9idJYotYSjo7/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1HAc0KYFP8z6wnZm33sGz6nhkDVUINakC/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1sOeUfxKcX4xr9RNm1k4NzlNCSE-M2xPr/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1dHw6E8MzyavyagBhq9xBlGTpqVf5axCg/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1QPOSG8sV5dmGa-YLCDzeJz7Q7qJcKayu/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1XRXW6xFjWi11mWcv8eBUhXyS1hbMzl1i/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1v8ACs6fnLxLW48QI9KN6zkH8-Y0vsng6/view?usp=drive_link,",
+        "https://drive.google.com/file/d/16bUcCSIKxDfJ8Q5hXDIsb56ZgILJ-x_a/view?usp=drive_link,",
+        "https://drive.google.com/file/d/12o1UvLj0z1SKgh7HDeD_S0y1UiJBqd-N/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1OuiwJM96p0lAhNdJhQpCecDae4F2m8HR/view?usp=drive_link,",
+        "https://drive.google.com/file/d/1LVNJFuEbguPvOTR-AZyWyGT96pc-ys7j/view?usp=drive_link",
+      ],
     },
   },
   "crusade-2026-divine-connection": {
@@ -262,6 +307,7 @@ export const CRUSADES: Record<string, CrusadeData> = {
       ],
       day2: [],
       day3: [],
+      day4: [],
     },
   },
   "crusade-2026-divine-encounter": {
@@ -279,6 +325,7 @@ export const CRUSADES: Record<string, CrusadeData> = {
       ],
       day2: [],
       day3: [],
+      day4: [],
     },
   },
 };

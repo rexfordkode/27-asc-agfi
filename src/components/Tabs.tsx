@@ -1,10 +1,10 @@
 import React from "react";
 
 type Props = {
-  value: "day1" | "day2" | "day3";
-  onChange: (v: "day1" | "day2" | "day3") => void;
-  imageCounts?: Record<"day1" | "day2" | "day3", number>;
-  dayCount?: number; // Number of days to show (2 or 3)
+  value: "day1" | "day2" | "day3" | "day4";
+  onChange: (v: "day1" | "day2" | "day3" | "day4") => void;
+  imageCounts?: Record<"day1" | "day2" | "day3" | "day4", number>;
+  dayCount?: number; // Number of days to show (2-4)
 };
 
 const Tabs: React.FC<Props> = ({
@@ -17,6 +17,7 @@ const Tabs: React.FC<Props> = ({
     { id: "day1", label: "Day 1", description: "Opening" },
     { id: "day2", label: "Day 2", description: "Growth" },
     { id: "day3", label: "Day 3", description: "Impact" },
+    { id: "day4", label: "Health Screening", description: "Community Care" },
   ] as const;
 
   // Only show days up to dayCount
@@ -31,7 +32,9 @@ const Tabs: React.FC<Props> = ({
             return (
               <button
                 key={day.id}
-                onClick={() => onChange(day.id as "day1" | "day2" | "day3")}
+                onClick={() =>
+                  onChange(day.id as "day1" | "day2" | "day3" | "day4")
+                }
                 className={`group relative px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex flex-col items-start ${
                   value === day.id
                     ? "bg-gradient-to-br from-blue-50 to-slate-50 text-blue-900 shadow-md border border-blue-200"

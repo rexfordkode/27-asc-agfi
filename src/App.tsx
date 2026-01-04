@@ -11,25 +11,40 @@ import { getAllCrusades, getCrusadeById } from "@/data/images";
 const App: React.FC = () => {
   const [selectedCrusadeId, setSelectedCrusadeId] =
     useState<string>("crusade-2026-main");
-  const [day, setDay] = useState<"day1" | "day2" | "day3">("day1");
+  const [day, setDay] = useState<"day1" | "day2" | "day3" | "day4">("day1");
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Initialize with localStorage data or fallback to default
   const [crusadeImages, setCrusadeImages] = useState<
-    Record<string, Record<"day1" | "day2" | "day3", string[]>>
+    Record<string, Record<"day1" | "day2" | "day3" | "day4", string[]>>
   >(() => {
     const savedImages = localStorage.getItem("agfi_crusade_images");
     if (savedImages) {
       try {
-        return JSON.parse(savedImages);
+        const parsed = JSON.parse(savedImages);
+        const crusades = getAllCrusades();
+        const normalized: Record<
+          string,
+          Record<"day1" | "day2" | "day3" | "day4", string[]>
+        > = {};
+        crusades.forEach((crusade) => {
+          const existing = parsed[crusade.id] || crusade.images;
+          normalized[crusade.id] = {
+            day1: existing.day1 || [],
+            day2: existing.day2 || [],
+            day3: existing.day3 || [],
+            day4: existing.day4 || [],
+          };
+        });
+        return normalized;
       } catch (error) {
-        // Initialize with current crusades
+        // Initialize with current crusades on parse failure
         const crusades = getAllCrusades();
         const initialData: Record<
           string,
-          Record<"day1" | "day2" | "day3", string[]>
+          Record<"day1" | "day2" | "day3" | "day4", string[]>
         > = {};
         crusades.forEach((crusade) => {
           initialData[crusade.id] = { ...crusade.images };
@@ -37,11 +52,12 @@ const App: React.FC = () => {
         return initialData;
       }
     }
-    // Initialize with current crusades
+
+    // Initialize with current crusades when no saved data
     const crusades = getAllCrusades();
     const initialData: Record<
       string,
-      Record<"day1" | "day2" | "day3", string[]>
+      Record<"day1" | "day2" | "day3" | "day4", string[]>
     > = {};
     crusades.forEach((crusade) => {
       initialData[crusade.id] = { ...crusade.images };
@@ -72,7 +88,7 @@ const App: React.FC = () => {
 
   const handleImagesAdd = (
     crusadeId: string,
-    selectedDay: "day1" | "day2" | "day3",
+    selectedDay: "day1" | "day2" | "day3" | "day4",
     urls: string[]
   ) => {
     setCrusadeImages((prev) => ({
@@ -86,7 +102,7 @@ const App: React.FC = () => {
 
   const handleImageRemove = (
     crusadeId: string,
-    selectedDay: "day1" | "day2" | "day3",
+    selectedDay: "day1" | "day2" | "day3" | "day4",
     index: number
   ) => {
     setCrusadeImages((prev) => ({
@@ -103,6 +119,7 @@ const App: React.FC = () => {
     day1: [],
     day2: [],
     day3: [],
+    day4: [],
   };
   const currentImages = currentCrusadeImages[day];
 
@@ -122,7 +139,7 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDayChange = (newDay: "day1" | "day2" | "day3") => {
+  const handleDayChange = (newDay: "day1" | "day2" | "day3" | "day4") => {
     setDay(newDay);
     // Smooth scroll to gallery section
     setTimeout(() => {
@@ -177,6 +194,7 @@ const App: React.FC = () => {
             day1: currentCrusadeImages.day1.length,
             day2: currentCrusadeImages.day2.length,
             day3: currentCrusadeImages.day3.length,
+            day4: currentCrusadeImages.day4.length,
           }}
           dayCount={currentCrusade?.dayCount || 3}
         />

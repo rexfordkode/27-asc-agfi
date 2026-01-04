@@ -1,32 +1,79 @@
 import React, { useState, useEffect } from "react";
 import OneDrivePicker from "./OneDrivePicker";
+import { getAllCrusades } from "@/data/images";
 
 interface AdminPanelProps {
-  onImagesAdd: (day: "day1" | "day2" | "day3", urls: string[]) => void;
-  onImageRemove: (day: "day1" | "day2" | "day3", index: number) => void;
-  currentImages: Record<"day1" | "day2" | "day3", string[]>;
+  onImagesAdd: (crusadeId: string, day: "day1" | "day2" | "day3", urls: string[]) => void;
+  onImageRemove: (crusadeId: string, day: "day1" | "day2" | "day3", index: number) => void;
+  currentCrusadeId: string;
+  currentImages: Record<string, Record<"day1" | "day2" | "day3", string[]>>;
 }
 
 // Generate the images.ts file content
 const generateImagesFile = (
-  images: Record<"day1" | "day2" | "day3", string[]>
+  crusadeImages: Record<string, Record<"day1" | "day2" | "day3", string[]>>
 ): string => {
   const formatArray = (urls: string[]) => {
     if (urls.length === 0) return "[]";
     return `[\n    ${urls.map((url) => `"${url}"`).join(",\n    ")},\n  ]`;
   };
 
-  return `// Image data structure grouping images by day.
+  const crusades = getAllCrusades();
+  let crusadeContent = "";
+
+  for (const crusade of crusades) {
+    const images = crusadeImages[crusade.id] || crusade.images;
+    crusadeContent += `  "${crusade.id}": {
+    id: "${crusade.id}",
+    name: "${crusade.name}",
+    location: "${crusade.location}",
+    startDate: "${crusade.startDate}",
+    endDate: "${crusade.endDate}",
+    description: "${crusade.description}",
+    images: {
+      day1: ${formatArray(images.day1)},
+      day2: ${formatArray(images.day2)},
+      day3: ${formatArray(images.day3)},
+    },
+  },\n`;
+  }
+
+  return `// Multi-crusade image data structure
 // Using Google Drive direct download links for best performance.
 
-export const IMAGES_BY_DAY: Record<"day1" | "day2" | "day3", string[]> = {
-  day1: ${formatArray(images.day1)},
-  day2: ${formatArray(images.day2)},
-  day3: ${formatArray(images.day3)},
+export interface CrusadeData {
+  id: string;
+  name: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  images: {
+    day1: string[];
+    day2: string[];
+    day3: string[];
+  };
+}
+
+export const CRUSADES: Record<string, CrusadeData> = {
+${crusadeContent}};
+
+// Legacy export for backwards compatibility
+export const IMAGES_BY_DAY = CRUSADES["crusade-2026-main"].images;
+
+// Helper function to get crusade by ID
+export const getCrusadeById = (id: string): CrusadeData | undefined => {
+  return CRUSADES[id];
+};
+
+// Helper function to get all crusades
+export const getAllCrusades = (): CrusadeData[] => {
+  return Object.values(CRUSADES);
 };
 
 // Key decisions:
-// - Keep a plain record keyed by day so the \`Tabs\` component can switch easily.
+// - Multi-crusade structure allows multiple programs at different locations
+// - Keep a plain record keyed by day within each crusade for easy switching
 // - URLs are Google Drive direct-download links for best performance (no login needed).
 `;
 };
@@ -40,21 +87,28 @@ const downloadFile = (content: string, filename: string) => {
   a.download = filename;
   document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
+  a.remove();
   URL.revokeObjectURL(url);
 };
 
 const AdminPanel: React.FC<AdminPanelProps> = ({
   onImagesAdd,
   onImageRemove,
+  currentCrusadeId,
   currentImages,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedCrusadeId, setSelectedCrusadeId] = useState<string>(currentCrusadeId);
   const [selectedDay, setSelectedDay] = useState<"day1" | "day2" | "day3">(
     "day1"
   );
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const crusades = getAllCrusades();
+
+  useEffect(() => {
+    setSelectedCrusadeId(currentCrusadeId);
+  }, [currentCrusadeId]);
 
   const ADMIN_PASSWORD = "agfi2026"; // Change this to your secure password
 
@@ -68,13 +122,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const handleFilesSelected = (files: any[]) => {
     const urls = files.map((file) => file.url);
-    onImagesAdd(selectedDay, urls);
+    onImagesAdd(selectedCrusadeId, selectedDay, urls);
     alert(`${files.length} images added to ${selectedDay}!`);
   };
 
   const handleRemoveImage = (index: number) => {
     if (confirm("Are you sure you want to remove this image?")) {
-      onImageRemove(selectedDay, index);
+      onImageRemove(selectedCrusadeId, selectedDay, index);
     }
   };
 
@@ -158,10 +212,29 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         ) : (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="crusade-select" className="block text-sm font-medium text-slate-700 mb-2">
+                Select Crusade/Program
+              </label>
+              <select
+                id="crusade-select"
+                value={selectedCrusadeId}
+                onChange={(e) => setSelectedCrusadeId(e.target.value)}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {crusades.map((crusade) => (
+                  <option key={crusade.id} value={crusade.id}>
+                    {crusade.name} - {crusade.location}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="day-select" className="block text-sm font-medium text-slate-700 mb-2">
                 Select Day
               </label>
               <select
+                id="day-select"
                 value={selectedDay}
                 onChange={(e) =>
                   setSelectedDay(e.target.value as "day1" | "day2" | "day3")
@@ -174,10 +247,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               </select>
             </div>
 
-            {/* OneDrive Picker - Commented out for testing
+            {/* COMMENTED OUT: Add images functionality disabled for production
             <OneDrivePicker
               onSuccess={handleFilesSelected}
-              onCancel={() => console.log("Picker cancelled")}
+              onCancel={() => {}}
             />
             */}
 
@@ -185,24 +258,24 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             <div className="pt-4 border-t border-slate-200">
               <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center justify-between">
                 <span>
-                  Current Images ({currentImages[selectedDay].length})
+                  Current Images ({(currentImages[selectedCrusadeId]?.[selectedDay] || []).length})
                 </span>
               </h3>
 
-              {currentImages[selectedDay].length === 0 ? (
+              {(currentImages[selectedCrusadeId]?.[selectedDay] || []).length === 0 ? (
                 <p className="text-sm text-slate-500 text-center py-4">
                   No images added yet for this day
                 </p>
               ) : (
                 <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {currentImages[selectedDay].map((url, index) => (
+                  {(currentImages[selectedCrusadeId]?.[selectedDay] || []).map((url, index) => (
                     <div
-                      key={index}
+                      key={`${selectedCrusadeId}-${selectedDay}-${index}`}
                       className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
                     >
                       <img
                         src={url}
-                        alt={`Image ${index + 1}`}
+                        alt=""
                         className="w-12 h-12 object-cover rounded border border-slate-200"
                       />
                       <div className="flex-1 min-w-0">

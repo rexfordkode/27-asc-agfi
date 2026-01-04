@@ -1,7 +1,31 @@
-// Image data structure grouping images by day.
+// Multi-crusade image data structure
 // Using Google Drive direct download links for best performance.
 
-export const IMAGES_BY_DAY: Record<"day1" | "day2" | "day3", string[]> = {
+export interface CrusadeData {
+  id: string;
+  name: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  dayCount: number; // Number of days in this crusade (2 or 3)
+  images: {
+    day1: string[];
+    day2: string[];
+    day3: string[];
+  };
+}
+
+export const CRUSADES: Record<string, CrusadeData> = {
+  "crusade-2026-main": {
+    id: "crusade-2026-main",
+    name: "27th Annual Salvation Crusade",
+    location: "Main Location",
+    startDate: "January 2, 2026",
+    endDate: "January 4, 2026",
+    description: "Power in the Name of Jesus",
+    dayCount: 3,
+    images: {
   day1: [
     "https://lh3.googleusercontent.com/d/10MeidtsJEnxHLWyrhKpmGaNk-8js4fVK",
     "https://lh3.googleusercontent.com/d/1imaEjfGezIWUfJtkDyEFcL1h51OaZ-ew",
@@ -219,10 +243,42 @@ export const IMAGES_BY_DAY: Record<"day1" | "day2" | "day3", string[]> = {
     "https://lh3.googleusercontent.com/d/1eEtyVYWy_mMzR4SlTfZ7qwv0Bmwr2uXa?export=download",
     "https://lh3.googleusercontent.com/d/1SvxpCgj1q-QwxIdVazpRW82XEC4qOSUO?export=download",
     "https://lh3.googleusercontent.com/d/1xGQTTD1hVsM-QK-DD1tZGURYjXPA4qfh?export=download",
-  ],
-  day3: [],
+      ],
+      day3: [],
+    },
+  },
+  "crusade-2026-divine-connection": {
+    id: "crusade-2026-divine-connection",
+    name: "Divine Connection",
+    location: "Takoradi Library Graceangel Conference Hall, Opposite Star of the SEA Cathedral Church, Western Region, Ghana",
+    startDate: "January 5, 2026 @ 7:00 PM",
+    endDate: "January 6, 2026 @ 7:00 PM",
+    description: "Experience the Power of Divine Connection with God",
+    dayCount: 2,
+    images: {
+      day1: [
+        "https://lh3.googleusercontent.com/d/1CmO_QhVw7gLs-KRSB815kDGvA-bc3AmZ",
+      ],
+      day2: [],
+      day3: [],
+    },
+  },
+};
+
+// Legacy export for backwards compatibility
+export const IMAGES_BY_DAY = CRUSADES["crusade-2026-main"].images;
+
+// Helper function to get crusade by ID
+export const getCrusadeById = (id: string): CrusadeData | undefined => {
+  return CRUSADES[id];
+};
+
+// Helper function to get all crusades
+export const getAllCrusades = (): CrusadeData[] => {
+  return Object.values(CRUSADES);
 };
 
 // Key decisions:
-// - Keep a plain record keyed by day so the `Tabs` component can switch easily.
+// - Multi-crusade structure allows multiple programs at different locations
+// - Keep a plain record keyed by day within each crusade for easy switching
 // - URLs are Google Drive direct-download links for best performance (no login needed).

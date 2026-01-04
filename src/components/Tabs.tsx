@@ -4,14 +4,18 @@ type Props = {
   value: "day1" | "day2" | "day3";
   onChange: (v: "day1" | "day2" | "day3") => void;
   imageCounts?: Record<"day1" | "day2" | "day3", number>;
+  dayCount?: number; // Number of days to show (2 or 3)
 };
 
-const Tabs: React.FC<Props> = ({ value, onChange, imageCounts }) => {
-  const days = [
+const Tabs: React.FC<Props> = ({ value, onChange, imageCounts, dayCount = 3 }) => {
+  const allDays = [
     { id: "day1", label: "Day 1", description: "Opening" },
     { id: "day2", label: "Day 2", description: "Growth" },
     { id: "day3", label: "Day 3", description: "Impact" },
   ] as const;
+
+  // Only show days up to dayCount
+  const days = allDays.slice(0, dayCount);
 
   return (
     <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">

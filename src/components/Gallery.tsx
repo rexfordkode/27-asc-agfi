@@ -354,27 +354,6 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
         )}
       </div>
 
-      {/* Social Links - Premium floating */}
-      <div className="fixed right-6 bottom-6 flex flex-col gap-4 z-30">
-        {Object.entries(SocialLinks).map(([k, v], idx) => (
-          <a
-            key={k}
-            href={v}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={`Visit ${k}`}
-            className="group relative w-14 h-14 rounded-full bg-gradient-to-br from-slate-900 to-black flex items-center justify-center text-white hover:shadow-2xl hover:scale-125 transition-all duration-300 border border-slate-700/50 hover:border-blue-400/80 hover:from-blue-600 hover:to-blue-800"
-            title={k}
-            style={{
-              animation: `slideUp 0.5s ease-out ${idx * 0.1}s both`,
-            }}
-          >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/0 via-blue-400/20 to-blue-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 group-hover:animate-pulse"></div>
-            <span className="relative text-lg">{socialIcons[k]}</span>
-          </a>
-        ))}
-      </div>
-
       <style>{`
         @keyframes slideUp {
           from {

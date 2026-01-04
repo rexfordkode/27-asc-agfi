@@ -46,7 +46,6 @@ const OneDrivePicker: React.FC<OneDrivePickerProps> = ({
       .map((url, index) => {
         const fileId = extractFileId(url);
         if (!fileId) {
-          console.warn("Invalid Google Drive URL:", url);
           return null;
         }
         const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?export=download`;

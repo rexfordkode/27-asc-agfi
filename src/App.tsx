@@ -1,32 +1,47 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import PromoBar from "@/components/PromoBar";
+import CrusadeCarousel from "@/components/CrusadeCarousel";
 import Tabs from "@/components/Tabs";
 import Gallery from "@/components/Gallery";
 import Modal from "@/components/Modal";
 import AdminPanel from "@/components/AdminPanel";
-import { IMAGES_BY_DAY } from "@/data/images";
+import { getAllCrusades, getCrusadeById } from "@/data/images";
 
 const App: React.FC = () => {
+  const [selectedCrusadeId, setSelectedCrusadeId] = useState<string>(
+    "crusade-2026-main"
+  );
   const [day, setDay] = useState<"day1" | "day2" | "day3">("day1");
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Initialize with localStorage data or fallback to default
-  const [images, setImages] = useState<
-    Record<"day1" | "day2" | "day3", string[]>
+  const [crusadeImages, setCrusadeImages] = useState<
+    Record<string, Record<"day1" | "day2" | "day3", string[]>>
   >(() => {
-    const savedImages = localStorage.getItem("agfi_images");
+    const savedImages = localStorage.getItem("agfi_crusade_images");
     if (savedImages) {
       try {
         return JSON.parse(savedImages);
       } catch (error) {
-        console.error("Failed to parse saved images:", error);
-        return IMAGES_BY_DAY;
+        // Initialize with current crusades
+        const crusades = getAllCrusades();
+        const initialData: Record<string, Record<"day1" | "day2" | "day3", string[]>> = {};
+        crusades.forEach((crusade) => {
+          initialData[crusade.id] = { ...crusade.images };
+        });
+        return initialData;
       }
     }
-    return IMAGES_BY_DAY;
+    // Initialize with current crusades
+    const crusades = getAllCrusades();
+    const initialData: Record<string, Record<"day1" | "day2" | "day3", string[]>> = {};
+    crusades.forEach((crusade) => {
+      initialData[crusade.id] = { ...crusade.images };
+    });
+    return initialData;
   });
 
   // Track scroll position for back-to-top and progress bar
@@ -45,32 +60,42 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
   // Save images to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("agfi_images", JSON.stringify(images));
-  }, [images]);
+    localStorage.setItem("agfi_crusade_images", JSON.stringify(crusadeImages));
+  }, [crusadeImages]);
 
   const handleImagesAdd = (
+    crusadeId: string,
     selectedDay: "day1" | "day2" | "day3",
     urls: string[]
   ) => {
-    setImages((prev) => ({
+    setCrusadeImages((prev) => ({
       ...prev,
-      [selectedDay]: [...prev[selectedDay], ...urls],
+      [crusadeId]: {
+        ...prev[crusadeId],
+        [selectedDay]: [...(prev[crusadeId]?.[selectedDay] || []), ...urls],
+      },
     }));
   };
 
   const handleImageRemove = (
+    crusadeId: string,
     selectedDay: "day1" | "day2" | "day3",
     index: number
   ) => {
-    setImages((prev) => ({
+    setCrusadeImages((prev) => ({
       ...prev,
-      [selectedDay]: prev[selectedDay].filter((_, i) => i !== index),
+      [crusadeId]: {
+        ...prev[crusadeId],
+        [selectedDay]: prev[crusadeId]?.[selectedDay]?.filter((_, i) => i !== index) || [],
+      },
     }));
   };
 
-  const currentImages = images[day];
+  const currentCrusadeImages = crusadeImages[selectedCrusadeId] || { day1: [], day2: [], day3: [] };
+  const currentImages = currentCrusadeImages[day];
 
   const handleNext = () => {
     if (previewIndex !== null && previewIndex < currentImages.length - 1) {
@@ -99,6 +124,21 @@ const App: React.FC = () => {
     }, 100);
   };
 
+  const handleCrusadeChange = (crusadeId: string) => {
+    setSelectedCrusadeId(crusadeId);
+    setDay("day1");
+    setPreviewIndex(null);
+    // Smooth scroll to gallery section
+    setTimeout(() => {
+      const gallery = document.getElementById("gallery");
+      if (gallery) {
+        gallery.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
+
+  const currentCrusade = getCrusadeById(selectedCrusadeId);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Scroll Progress Bar */}
@@ -117,18 +157,23 @@ const App: React.FC = () => {
       <Header />
       <PromoBar />
       <main id="main">
+        <CrusadeCarousel
+          selectedCrusadeId={selectedCrusadeId}
+          onSelectCrusade={handleCrusadeChange}
+        />
         <Tabs
           value={day}
           onChange={handleDayChange}
           imageCounts={{
-            day1: images.day1.length,
-            day2: images.day2.length,
-            day3: images.day3.length,
+            day1: currentCrusadeImages.day1.length,
+            day2: currentCrusadeImages.day2.length,
+            day3: currentCrusadeImages.day3.length,
           }}
+          dayCount={currentCrusade?.dayCount || 3}
         />
         <div id="gallery">
           <Gallery
-            images={images[day]}
+            images={currentImages}
             onPreview={(index) => setPreviewIndex(index)}
             currentDay={day}
           />
@@ -168,12 +213,13 @@ const App: React.FC = () => {
         </button>
       )}
 
-      {/* Admin Panel - Disabled */}
-      {/* <AdminPanel
+      {/* Admin Panel */}
+      <AdminPanel
         onImagesAdd={handleImagesAdd}
         onImageRemove={handleImageRemove}
-        currentImages={images}
-      /> */}
+        currentCrusadeId={selectedCrusadeId}
+        currentImages={crusadeImages}
+      />
 
       {previewIndex !== null && (
         <Modal

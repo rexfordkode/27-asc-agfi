@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   return (
     <header className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Banner Image with Overlay */}
-      <div className="relative w-full h-[450px] md:h-[550px]">
+      <div className="relative w-full h-[300px] sm:h-[380px] md:h-[500px] lg:h-[600px]">
         {/* Banner Image */}
         <div className="absolute inset-0">
           <img
@@ -32,6 +32,7 @@ const Header: React.FC = () => {
               filter: imageLoaded ? "brightness(0.85) contrast(1.1)" : "none",
               backgroundSize: "cover",
             }}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
           />
 
           {/* Loading skeleton for banner */}
@@ -46,19 +47,19 @@ const Header: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50"></div>
 
         {/* Content Overlay */}
-        <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col justify-end pb-12 md:pb-16">
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-8 sm:pb-12 md:pb-16">
           {/* Logo Badge */}
           <div
-            className={`mb-6 transform transition-all duration-1000 ${
+            className={`mb-4 sm:mb-6 transform transition-all duration-1000 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
             <div className="inline-flex items-center gap-3 group">
               <div>
-                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter drop-shadow-2xl">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter drop-shadow-2xl">
                   AGFI
                 </h1>
-                <p className="text-blue-300 text-xs font-bold tracking-widest mt-1 drop-shadow-lg">
+                <p className="text-blue-300 text-xs sm:text-sm font-bold tracking-widest mt-1 drop-shadow-lg">
                   POWER IN THE NAME JESUS CRUSADE
                 </p>
               </div>
@@ -67,14 +68,14 @@ const Header: React.FC = () => {
 
           {/* Event Title */}
           <div
-            className={`mb-4 transform transition-all duration-1000 delay-100 ${
+            className={`mb-3 sm:mb-4 transform transition-all duration-1000 delay-100 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-2xl md:text-4xl font-bold text-white drop-shadow-2xl max-w-3xl">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-2xl max-w-3xl">
               27th Annual Salvation Crusade
             </h2>
-            <p className="text-base md:text-lg text-gray-200 mt-2 drop-shadow-lg max-w-2xl font-light">
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-200 mt-2 drop-shadow-lg max-w-2xl font-light">
               Experience three powerful days of miracles, divine healing, and
               life-transforming encounters
             </p>
@@ -82,25 +83,25 @@ const Header: React.FC = () => {
 
           {/* Info Pills */}
           <div
-            className={`flex flex-wrap gap-3 transform transition-all duration-1000 delay-200 ${
+            className={`flex flex-wrap gap-2 sm:gap-3 transform transition-all duration-1000 delay-200 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
-              <span className="text-lg">📍</span>
-              <span className="text-white text-sm font-semibold">
+            <div className="px-3 sm:px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
+              <span className="text-base sm:text-lg">📍</span>
+              <span className="text-white text-xs sm:text-sm font-semibold">
                 Mpohor, Western Region 🇬🇭
               </span>
             </div>
-            <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
-              <span className="text-lg">📅</span>
-              <span className="text-white text-sm font-semibold">
+            <div className="px-3 sm:px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
+              <span className="text-base sm:text-lg">📅</span>
+              <span className="text-white text-xs sm:text-sm font-semibold">
                 2nd - 4th January 2026
               </span>
             </div>
-            <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
-              <span className="text-lg">🕖</span>
-              <span className="text-white text-sm font-semibold">
+            <div className="px-3 sm:px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-2 shadow-lg">
+              <span className="text-base sm:text-lg">🕖</span>
+              <span className="text-white text-xs sm:text-sm font-semibold">
                 7:00 PM GMT Daily
               </span>
             </div>

@@ -39,7 +39,7 @@ const Modal: React.FC<Props> = ({
           url: window.location.href,
         });
       } catch (err) {
-        console.log("Share cancelled or failed");
+        // Share cancelled or failed silently
       }
     } else {
       // Fallback: copy link to clipboard

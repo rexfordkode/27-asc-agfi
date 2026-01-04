@@ -114,21 +114,33 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
               {currentImages.map((src, i) => {
                 const globalIndex = startIndex + i;
                 return (
-                  <div
+                  <button
                     key={globalIndex}
-                    className="group relative h-72 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 cursor-pointer shadow-md hover:shadow-2xl transition-shadow duration-300"
+                    className="group relative h-72 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 cursor-pointer shadow-md hover:shadow-2xl transition-shadow duration-300 border-0 p-0 text-left"
                     onClick={() => onPreview(globalIndex)}
                     onMouseEnter={() => setHoveredIndex(globalIndex)}
                     onMouseLeave={() => setHoveredIndex(null)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onPreview(globalIndex);
+                      }
+                    }}
                     style={{
                       animation: `fadeInUp 0.4s ease-out ${i * 0.05}s both`,
                     }}
+                    aria-label={`${dayInfo[currentDay].title} - Photo ${
+                      globalIndex + 1
+                    }`}
                   >
                     {/* Image container */}
                     <div className="relative w-full h-full">
                       <img
                         loading="lazy"
-                        src={optimizeGoogleDriveImage(src, { width: 600, quality: 80 })}
+                        src={optimizeGoogleDriveImage(src, {
+                          width: 600,
+                          quality: 80,
+                        })}
                         alt={`Program image ${globalIndex + 1}`}
                         decoding="async"
                         onLoad={() => handleImageLoad(globalIndex)}
@@ -209,7 +221,7 @@ const Gallery: React.FC<Props> = ({ images, onPreview, currentDay }) => {
                         transition: "transform 0.7s ease-out",
                       }}
                     ></div>
-                  </div>
+                  </button>
                 );
               })}
             </div>

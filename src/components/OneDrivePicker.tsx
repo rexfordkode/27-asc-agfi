@@ -12,9 +12,11 @@ const OneDrivePicker: React.FC<OneDrivePickerProps> = ({
   const [links, setLinks] = useState("");
 
   const extractFileId = (url: string): string | null => {
-    // Extract file ID from Google Drive URL
+    // Extract file ID from Google Drive URL - supports multiple formats
+    // Format: https://drive.google.com/file/d/FILE_ID/view
+    // or: https://lh3.googleusercontent.com/d/FILE_ID
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return match ? match[1] : null;
+    return match ? match[1].trim() : null;
   };
 
   const handleAddLinks = () => {
@@ -23,14 +25,19 @@ const OneDrivePicker: React.FC<OneDrivePickerProps> = ({
       return;
     }
 
-    // Split by newlines and filter empty lines
+    // Split by newlines, commas, and spaces - handle multiple formats
     const urlList = links
-      .split("\n")
+      .split(/[\n,;\s]+/) // Split by newlines, commas, semicolons, or spaces
       .map((link) => link.trim())
-      .filter((link) => link.length > 0);
+      .filter(
+        (link) =>
+          link.length > 0 &&
+          (link.includes("drive.google.com") ||
+            link.includes("lh3.googleusercontent.com"))
+      );
 
     if (urlList.length === 0) {
-      alert("No valid links found");
+      alert("No valid Google Drive links found");
       return;
     }
 
@@ -42,10 +49,11 @@ const OneDrivePicker: React.FC<OneDrivePickerProps> = ({
           console.warn("Invalid Google Drive URL:", url);
           return null;
         }
+        const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?export=download`;
         return {
           name: `Image ${index + 1}`,
-          url: `https://lh3.googleusercontent.com/d/${fileId}`,
-          thumbnailUrl: `https://lh3.googleusercontent.com/d/${fileId}`,
+          url: imageUrl,
+          thumbnailUrl: imageUrl,
         };
       })
       .filter((item) => item !== null);

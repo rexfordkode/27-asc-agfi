@@ -333,6 +333,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 className="w-full h-24 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 placeholder="https://1drv.ms/..."
               />
+              {/* COMMENTED OUT: Add button disabled
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -342,6 +343,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   Add links to this day
                 </button>
               </div>
+              */}
             </div>
 
             {/* COMMENTED OUT: Add images functionality disabled for production

@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   // Initialize with localStorage data or fallback to default
   const [crusadeImages, setCrusadeImages] = useState<
@@ -240,12 +241,36 @@ const App: React.FC = () => {
         </button>
       )}
 
+      {/* Admin Panel Button */}
+      <button
+        onClick={() => setShowAdminPanel(true)}
+        className="fixed bottom-24 left-6 w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white flex items-center justify-center shadow-[0_8px_30px_rgba(168,85,247,0.4)] hover:shadow-[0_8px_40px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-110 z-40 group"
+        aria-label="Admin panel"
+        title="Admin Panel"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
+
       {/* Admin Panel */}
       <AdminPanel
         onImagesAdd={handleImagesAdd}
         onImageRemove={handleImageRemove}
         currentCrusadeId={selectedCrusadeId}
         currentImages={crusadeImages}
+        isOpen={showAdminPanel}
+        onClose={() => setShowAdminPanel(false)}
       />
 
       {previewIndex !== null && (

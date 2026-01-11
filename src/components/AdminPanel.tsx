@@ -18,6 +18,8 @@ interface AdminPanelProps {
     string,
     Record<"day1" | "day2" | "day3" | "day4", string[]>
   >;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 // Generate the images.ts file content
@@ -114,8 +116,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   onImageRemove,
   currentCrusadeId,
   currentImages,
+  isOpen,
+  onClose,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedCrusadeId, setSelectedCrusadeId] =
     useState<string>(currentCrusadeId);
   const [selectedDay, setSelectedDay] = useState<
@@ -222,7 +225,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
           <h2 className="text-2xl font-bold text-slate-900">Admin Panel</h2>
           <button
             onClick={() => {
-              setIsOpen(false);
+              onClose();
               setIsAuthenticated(false);
               setPassword("");
             }}
@@ -323,12 +326,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            {/* COMMENTED OUT: Add images functionality disabled for production
             <OneDrivePicker
               onSuccess={handleFilesSelected}
               onCancel={() => {}}
             />
-            */}
 
             {/* Current Images List */}
             <div className="pt-4 border-t border-slate-200">
